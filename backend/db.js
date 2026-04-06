@@ -1,10 +1,10 @@
 const mysql = require('mysql2/promise')
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is not set')
+if (!process.env.MYSQL_PUBLIC_URL) {
+  throw new Error('MYSQL_PUBLIC_URL is not set')
 }
 
-const url = new URL(process.env.DATABASE_URL)
+const url = new URL(process.env.MYSQL_PUBLIC_URL)
 
 const pool = mysql.createPool({
   host: url.hostname,
