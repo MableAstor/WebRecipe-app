@@ -8,11 +8,22 @@ const pool = require('./db')
 const app = express()
 
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    process.env.FRONTEND_URL
-  ].filter(Boolean)
+  origin: function (origin, callback) {
+    const allowed = [
+      'http://localhost:5173',
+      'https://webrecipe-app-1.onrender.com',
+      'https://webrecipe-app.onrender.com'
+    ]
+
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(null, true) // 👈 ชั่วคราวเปิดหมดไปเลย
+    }
+  },
+  credentials: true
 }))
+
 app.use(express.json({ limit: '10mb' }))
 
 function getPeriodKey(date = new Date()) {
