@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #receipt-preview, #receipt-preview * {
+    visibility: visible;
+  }
+}

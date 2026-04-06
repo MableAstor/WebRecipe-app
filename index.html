@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบออกใบเสร็จง่ายๆ</title>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-rose-50 via-red-50 to-pink-100 p-4 md:p-6">
+  <div id="app" class="mx-auto max-w-6xl grid grid-cols-1 gap-8 lg:grid-cols-2">
+
+    <!-- ฝั่งซ้าย -->
+    <div
+      class="rounded-[28px] border border-rose-200/70 bg-white/90 p-6 shadow-[0_12px_40px_rgba(244,63,94,0.12)] backdrop-blur">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-rose-500">ข้อมูลใบเสร็จ</h2>
+        <p class="mt-1 text-sm text-rose-300">กรอกข้อมูลเพื่อสร้างใบเสร็จและภาพสำหรับส่งลูกค้า</p>
+      </div>
+
+      <div class="space-y-5">
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-rose-400">ชื่อลูกค้า</label>
+          <input type="text" id="customerName"
+            class="w-full rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-slate-700 outline-none transition focus:border-rose-400 focus:bg-white"
+            placeholder="ชื่อ-นามสกุล" />
+        </div>
+
+        <div class="rounded-3xl border border-rose-100 bg-gradient-to-br from-white to-rose-50 p-5">
+          <h3 class="mb-4 text-lg font-bold text-slate-700">รายละเอียดสินค้า / บริการ</h3>
+
+          <div class="space-y-4">
+            <div>
+              <label class="mb-2 block text-sm font-semibold text-rose-400">หมวด</label>
+              <select id="itemCategory"
+                class="w-full rounded-2xl border border-rose-200 bg-white px-4 py-3 text-slate-700 outline-none transition focus:border-rose-400">
+                <option value="ฟอนต์">ฟอนต์</option>
+                <option value="งานออกแบบ">งานออกแบบ</option>
+                <option value="กลุ่ม/บริการ">กลุ่ม/บริการ</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-semibold text-rose-400">ชื่อรายการ</label>
+              <input type="text" id="itemName"
+                class="w-full rounded-2xl border border-rose-200 bg-white px-4 py-3 text-slate-700 outline-none transition focus:border-rose-400"
+                placeholder="เช่น ฟอนต์ Cake Matcha" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="mb-2 block text-sm font-semibold text-rose-400">ราคา</label>
+                <input type="number" id="itemPrice"
+                  class="w-full rounded-2xl border border-rose-200 bg-white px-4 py-3 text-slate-700 outline-none transition focus:border-rose-400"
+                  placeholder="ราคา" />
+              </div>
+
+              <div>
+                <label class="mb-2 block text-sm font-semibold text-rose-400">จำนวน</label>
+                <input type="number" id="itemQty"
+                  class="w-full rounded-2xl border border-rose-200 bg-white px-4 py-3 text-slate-700 outline-none transition focus:border-rose-400"
+                  value="1" min="1" />
+              </div>
+            </div>
+
+            <button id="addItemBtn" type="button"
+              class="w-full rounded-2xl bg-rose-400 py-3 font-semibold text-white shadow-md transition hover:bg-rose-500">
+              เพิ่มรายการ
+            </button>
+
+            <div>
+              <h3 class="mb-2 text-base font-bold text-slate-700">รายการที่เลือก</h3>
+              <div id="selectedItems" class="space-y-2 rounded-2xl border border-dashed border-rose-200 bg-white p-3">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-rose-400">ส่วนลด</label>
+          <input type="number" id="discount"
+            class="w-full rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-slate-700 outline-none transition focus:border-rose-400 focus:bg-white"
+            placeholder="ส่วนลด (บาท)" />
+        </div>
+
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <button id="clearBtn"
+            class="w-full rounded-2xl bg-slate-400 py-3 font-semibold text-white transition hover:bg-slate-500">
+            ล้างข้อมูล
+          </button>
+
+          <button id="generateBtn"
+            class="w-full rounded-2xl bg-rose-500 py-3 font-semibold text-white shadow-md transition hover:bg-rose-600">
+            สร้างใบเสร็จ
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ฝั่งขวา -->
+    <div class="space-y-4">
+      <div id="receipt-preview" class="mx-auto max-w-md rounded-3xl border border-rose-200 bg-white p-5 shadow-md">
+        <div class="mx-auto mb-4 h-28 w-28 overflow-hidden rounded-full border-4 border-rose-100 shadow-md">
+          <img src="http://localhost:5173/logo.jpg" alt="Logo" class="h-full w-full object-cover" />
+        </div>
+
+        <h1 class="text-center text-xl font-bold tracking-wide text-rose-500">
+          ใบเสร็จรับเงิน
+        </h1>
+        <p class="text-center text-xs text-slate-500 mt-1">
+          Jxne Store
+        </p>
+
+        <div class="mt-4 flex justify-between text-sm text-slate-500">
+          <p>วันที่ : <span id="date"></span></p>
+          <p>เลขที่ : <span id="receiptNo"></span></p>
+        </div>
+
+        <div class="mt-2 text-center text-sm text-slate-500">
+          <p>Facebook : Jessy Jane | LINE : @226xfldb</p>
+        </div>
+
+        <div class="my-5 h-px bg-gradient-to-r from-transparent via-rose-200 to-transparent"></div>
+
+        <p class="mb-2 text-center text-lg font-bold text-slate-700">รายละเอียดสินค้า / บริการ</p>
+        <p class="mb-3 text-sm text-slate-700">
+          <strong>ลูกค้า :</strong> K. <span id="displayCustomer">-</span>
+        </p>
+
+        <div class="rounded-3xl border border-rose-200 bg-rose-50/40 p-4">
+          <div class="grid grid-cols-12 border-b border-rose-200 pb-2 text-sm font-semibold text-slate-700">
+            <span class="col-span-6">รายการ</span>
+            <span class="col-span-2 text-center">จำนวน</span>
+            <span class="col-span-4 text-right">รวม</span>
+          </div>
+
+          <div id="receiptItems" class="space-y-2 py-3 text-sm text-slate-700">
+            <p class="text-slate-400">ยังไม่มีรายการ</p>
+          </div>
+
+          <div class="space-y-1 border-t border-rose-200 pt-3 text-sm">
+            <div class="flex justify-between text-slate-600">
+              <span>ยอดรวม</span>
+              <span id="displaySubtotal">0.00</span>
+            </div>
+
+            <div class="flex justify-between text-rose-400">
+              <span>ส่วนลด</span>
+              <span>- <span id="displayDiscount">0.00</span></span>
+            </div>
+
+            <div class="mt-2 flex justify-between border-t border-rose-200 pt-3 text-xl font-bold text-slate-800">
+              <span>ยอดที่ต้องชำระ</span>
+              <span>฿ <span id="displayFinal">0.00</span></span>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="paymentInfo" class="mt-5 flex flex-col items-center"></div>
+        <div class="mt-5 text-center text-sm text-rose-300">
+          <p>⊹₊˚‧︵‿₊୨ᰔ୧₊‿︵‧˚₊⊹</p>
+          <p class="font-semibold text-rose-400">𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒔𝒖𝒑𝒑𝒐𝒓𝒕 ♡ </p>
+          <p>⊹₊˚‧︵‿₊୨ᰔ୧₊‿︵‧˚₊⊹</p>
+        </div>
+      </div>
+
+      <button id="saveImageBtn"
+        class="w-full rounded-2xl bg-rose-500 py-3 font-semibold text-white shadow-md transition hover:bg-rose-600">
+        บันทึกเป็นภาพ
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
