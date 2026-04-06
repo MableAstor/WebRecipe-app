@@ -177,15 +177,20 @@ app.post('/api/receipt-image', async (req, res) => {
       deviceScaleFactor: 2
     })
 
-    await page.setContent(html, {
-      waitUntil: 'networkidle0'
+    // 🔥 เพิ่ม BASE URL เข้าไป
+    const htmlWithBase = html.replace(
+      '<head>',
+      '<head><base href="https://webrecipe-app-1.onrender.com/">'
+    )
+
+    await page.setContent(htmlWithBase, {
+      waitUntil: 'domcontentloaded'
     })
 
-    const receipt = await page.$('#receipt-preview')
+    // 🔥 รอ element ให้ชัวร์
+    await page.waitForSelector('#receipt-preview', { timeout: 10000 })
 
-    if (!receipt) {
-      return res.status(400).json({ message: 'ไม่พบ #receipt-preview ใน HTML' })
-    }
+    const receipt = await page.$('#receipt-preview')
 
     const imageBuffer = await receipt.screenshot({
       type: 'png'

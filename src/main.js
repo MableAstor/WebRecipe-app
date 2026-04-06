@@ -172,9 +172,9 @@ generateBtn?.addEventListener('click', async () => {
         <span class="col-span-6"><div>[ ${item.category} ]</div><div class="ml-3 mt-1">${item.itemName}</div></span>
         <span class="col-span-2 text-center">${item.quantity}</span>
         <span class="col-span-4 text-right">${item.lineTotal.toLocaleString('th-TH', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })}</span>
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })}</span>
       </div>
     `
   })
@@ -227,11 +227,30 @@ generateBtn?.addEventListener('click', async () => {
 
 saveImageBtn?.addEventListener('click', async () => {
   try {
+    const receiptEl = document.querySelector('#receipt-preview')
+
+    if (!receiptEl) {
+      throw new Error('ไม่พบใบเสร็จสำหรับบันทึกภาพ')
+    }
+
     const response = await fetch(`${API_BASE}/api/receipt-image`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        html: document.documentElement.outerHTML
+        html: `
+          <!DOCTYPE html>
+          <html lang="th">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <base href="${window.location.origin}/">
+            <title>Receipt</title>
+          </head>
+          <body style="margin:0; padding:20px; background:#fdf2f8;">
+            ${receiptEl.outerHTML}
+          </body>
+          </html>
+        `
       })
     })
 
