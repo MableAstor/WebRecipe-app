@@ -1,12 +1,17 @@
 const mysql = require('mysql2/promise')
 
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is not set')
+}
+
+const url = new URL(process.env.DATABASE_URL)
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT || 3306,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  charset: 'utf8mb4',
+  host: url.hostname,
+  port: Number(url.port),
+  user: decodeURIComponent(url.username),
+  password: decodeURIComponent(url.password),
+  database: url.pathname.replace('/', ''),
   waitForConnections: true,
   connectionLimit: 10
 })
