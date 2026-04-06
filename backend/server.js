@@ -154,7 +154,8 @@ app.post('/api/receipt-image', async (req, res) => {
 
   try {
     browser = await puppeteer.launch({
-      headless: true
+      headless: 'new',
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
 
     const page = await browser.newPage()
@@ -183,9 +184,10 @@ app.post('/api/receipt-image', async (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename="receipt.png"')
     res.send(imageBuffer)
   } catch (error) {
-    console.error(error)
+    console.error('receipt-image error:', error)
     res.status(500).json({
-      message: 'สร้างภาพใบเสร็จไม่สำเร็จ'
+      message: 'สร้างภาพใบเสร็จไม่สำเร็จ',
+      error: error.message
     })
   } finally {
     if (browser) {
